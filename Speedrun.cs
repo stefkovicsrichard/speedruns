@@ -39,5 +39,10 @@ namespace speedruns
         {
             get { return this.time; }
         }
+
+        public string Cat
+        {
+            get => this.cat;
+        }
     }
 }
