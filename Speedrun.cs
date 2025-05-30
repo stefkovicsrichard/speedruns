@@ -30,7 +30,12 @@ namespace speedruns
             this.cat = cat;
         }
 
-        public float Time
+        public TimeSpan Time_TS
+        {
+            get { return TimeSpan.FromSeconds(this.time); }
+        }
+
+        public float Time_F
         {
             get { return this.time; }
         }
