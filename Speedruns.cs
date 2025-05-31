@@ -22,41 +22,62 @@ namespace speedruns
             while (!sr.EndOfStream)
             {
                 string[] line = sr.ReadLine().Split(';');
-                string runner = line[0];
-                string cat;
-                if (ValidCat(line[2]))
+                AddRun(line[0], line[1], line[2]);
+            }
+            sr.Close();
+        }
+
+        public void AddRun(string runner, string time, string cat)
+        {
+            if (ValidCat(cat))
+            {
+                int j = 1;
+                foreach (Speedrun s in runs)
                 {
-                    cat = line[2];
-                    int j = 1;
-                    foreach (Speedrun s in runs)
+                    if (s.Cat == cat)
                     {
-                        if (s.Cat == cat)
-                        {
-                            j++;
-                        }
+                        j++;
                     }
-                    int place = j;
-                    Console.WriteLine($"{runner} {place}");
-                    string[] tl = line[1].Split(':');
-                    Speedrun run;
-                    if (tl.Length == 1)
-                    {
-                        float time = float.Parse(line[1]);
-                        run = new Speedrun(runner, place, time, cat);
-                    }
-                    else
-                    {
-                        string time = line[1];
-                        run = new Speedrun(runner, place, time, cat);
-                    }
-                    runs.Add(run);
+                }
+                int place = j;
+                string[] tl = time.Split(':');
+                Speedrun run;
+                if (tl.Length == 1)
+                {
+                    float t = float.Parse(time);
+                    run = new Speedrun(runner, place, t, cat);
                 }
                 else
                 {
-                    Console.WriteLine("Invalid category, run skipped.");
+                    string t = time;
+                    run = new Speedrun(runner, place, t, cat);
                 }
+                runs.Add(run);
             }
-            sr.Close();
+            else
+            {
+                Console.WriteLine("Invalid category, run not added.");
+            }
+        }
+
+        public List<Speedrun> GetRuns(string cat = "all", bool sort = true)
+        {
+            if (cat == "all")
+            {
+                List<Speedrun> list = new List<Speedrun>(runs);
+                if (sort) Sort(list);
+                return list;
+            }
+            else if (ValidCat(cat) && runs.Count > 0)
+            {
+                List<Speedrun> list = new List<Speedrun>(runs).FindAll(e => e.Cat == cat);
+                if (sort) Sort(list);
+                return list;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public List<string> Cats
@@ -71,6 +92,25 @@ namespace speedruns
                 return true;
             }
             return false;
+        }
+
+        public void Sort(List<Speedrun> runs, bool asc = true)
+        {
+            int n = runs.Count;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n - i - 1; j++)
+                {
+                    if ((!asc && runs[j+1].Time_F > runs[j].Time_F) || (asc && runs[j].Time_F > runs[j+1].Time_F))
+                    {
+                        (runs[j], runs[j + 1]) = (runs[j + 1], runs[j]);
+                    }
+                }
+            }
+            for (int i = 0; i < runs.Count; i++)
+            {
+                runs[i].Place = i + 1;
+            }
         }
     }
 }
