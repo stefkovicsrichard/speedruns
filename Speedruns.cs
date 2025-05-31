@@ -60,24 +60,22 @@ namespace speedruns
             }
         }
 
-        public List<Speedrun> GetRuns(string cat = "all", bool sort = true)
+        public List<Speedrun> GetRuns(string cat = "all", bool sort = true, bool asc = true)
         {
             if (cat == "all")
             {
                 List<Speedrun> list = new List<Speedrun>(runs);
-                if (sort) Sort(list);
+                if (sort) Sort(list, asc);
                 return list;
             }
             else if (ValidCat(cat) && runs.Count > 0)
             {
                 List<Speedrun> list = new List<Speedrun>(runs).FindAll(e => e.Cat == cat);
-                if (sort) Sort(list);
+                if (sort) Sort(list, asc); else Renum(list);
                 return list;
             }
-            else
-            {
-                return null;
-            }
+            Console.WriteLine("Incorrect category");
+            return new List<Speedrun>();
         }
 
         public List<string> Cats
@@ -107,9 +105,16 @@ namespace speedruns
                     }
                 }
             }
-            for (int i = 0; i < runs.Count; i++)
+            Renum(runs, asc);
+        }
+
+        private void Renum(List<Speedrun> runs, bool asc = true)
+        {
+            int k = 0;
+            for (int i = asc ? 0 : runs.Count; (asc ? i : runs.Count) < (asc ? runs.Count : i); i += asc ? 1 : -1)
             {
-                runs[i].Place = i + 1;
+                runs[k].Place = i + 1;
+                k++;
             }
         }
     }

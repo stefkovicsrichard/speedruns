@@ -11,7 +11,11 @@ namespace speedruns
         static void Main(string[] args)
         {
             Speedruns hl1 = new Speedruns("hl1.txt");
-            foreach (Speedrun s in hl1.GetRuns("won"))
+            foreach (Speedrun s in hl1.GetRuns(hl1.Cats[2]))
+            {
+                Console.WriteLine(s.ToString());
+            }
+            foreach (Speedrun s in hl1.GetRuns(hl1.Cats[2], true, false))
             {
                 Console.WriteLine(s.ToString());
             }
