@@ -11,7 +11,7 @@ namespace speedruns
     {
         static void Main(string[] args)
         {
-            Speedruns hl1 = new Speedruns("hl1.txt");
+            Speedruns hl1 = new Speedruns("../../hl1.txt");
 
             Console.WriteLine("\nAll categories:");
             foreach (Speedrun s in hl1.GetRuns())
@@ -36,10 +36,10 @@ namespace speedruns
 
             //----------------------------------
 
-            Speedruns sm64 = new Speedruns("sm64.txt");
+            Speedruns sm64 = new Speedruns("../../sm64.txt");
 
             sm64.GetRuns();
-            sm64.General("sql.sql");
+            sm64.General("../../sql.sql");
         }
     }
 }

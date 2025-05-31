@@ -51,7 +51,6 @@ namespace speedruns
                     if (float.Parse(time) == 0)
                     {
                         string ts = $"{r.Next(5):D2}:{r.Next(60):D2}:{r.Next(60)+r.NextDouble():00.000}";
-                        Console.WriteLine(ts);
                         run = new Speedrun(game, runner, place, ts, cat);
                     }
                     else
@@ -146,10 +145,10 @@ namespace speedruns
             sw.WriteLine("TRUNCATE speedrun;");
             sw.WriteLine("INSERT INTO speedrun(runner,place,ido,category)");
             sw.WriteLine("VALUES");
-            sw.Write($"({runs[0].Runner}, {runs[0].Place}, {runs[0].Time_F}, {runs[0].Cat}");
+            sw.Write($"(\"{runs[0].Runner}\", {runs[0].Place}, {runs[0].Time_F.ToString().Replace(',','.')}, \"{runs[0].Cat}\"");
             for (int i = 1; i < runs.Count; i++)
             {
-                sw.Write($"),\n({runs[i].Runner}, {runs[i].Place}, {runs[i].Time_F}, {runs[i].Cat}");
+                sw.Write($"),\n(\"{runs[i].Runner}\", {runs[i].Place.ToString().Replace(',', '.')}, {runs[i].Time_F.ToString().Replace(',', '.')}, \"{runs[i].Cat}\"");
             }
             sw.WriteLine(");");
             sw.Close();
